@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p id="log"></p>
+</body>
+<script src="/static/jquery.min.js"></script>
+<script>
+    $(function () {
+        var line = {{ line }}
+        var t = setInterval(function () {
+            line++
+            $.ajax({
+                url:"http://192.168.128.128:5000/getlog/"+line,
+                type:'GET',
+                success:function (data) {
+                    if (data != ''){
+                        $('#log').append('<p>'+data+'</p>');
+                        window.scrollTo(0,document.body.scrollHeight);
+                    }else {
+                        $('#log').append('<p>'+'--done--'+'</p>');
+                        window.scrollTo(0,document.body.scrollHeight);
+                        clearInterval(t);
+                    }
+                },
+                error:function (data) {
+                    
+                }
+            })
+        },200)
+    })
+</script>
+</html>
